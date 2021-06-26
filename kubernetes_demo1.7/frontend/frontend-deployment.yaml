@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.service: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.service: frontend
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        io.network/react-spring: "true"
+        io.service: frontend
+    spec:
+      containers:
+        - image: piyushrgupta/frontend:v6.0
+          name: frontend
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          livenessProbe:
+            tcpSocket:
+              port: 3000

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.service: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.service: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.network/react-spring: "true"
+        io.network/spring-mysql: "true"
+        io.service: backend
+    spec:
+      serviceAccountName: default
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 3000
+        runAsGroup: 3000
+      containers:
+        - env:
+            - name: MYSQL_HOST
+              valueFrom:
+                 configMapKeyRef:
+                  name: dbconfig
+                  key: DB_HOST
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                 name: db-password
+                 key:  dbpassword
+          image: piyushrgupta/backend:v1.2
+          name: backend
+          command: ["java","-cp","app:app/lib/*","com.company.project.Application"]
+          resources:
+            requests:
+              memory: "700Mi"
+              cpu: "300m"
+            limits:
+              memory: "1000Mi"
+              cpu: "400m"
+          volumeMounts:
+            - mountPath: /run/secrets/db-password
+              name: db-password
+      restartPolicy: Always
+      
+      volumes:
+        - name: db-password
+          secret:
+            items:
+              - key: dbpassword
+                path: db-password
+                mode: 0777
+            secretName: db-password

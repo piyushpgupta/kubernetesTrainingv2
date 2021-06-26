@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.service: backend
+  name: backend
+spec:
+  ports:
+    - name: backendport
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.service: backend
+status:
+  loadBalancer: {}

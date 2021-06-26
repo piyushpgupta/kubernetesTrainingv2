@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.service: db
+  name: db
+spec:
+  ports:
+    - name: dbport
+      port: 3306
+      targetPort: 3306
+  selector:
+    io.service: db
+status:
+  loadBalancer: {}
