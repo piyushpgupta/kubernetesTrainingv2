@@ -5,6 +5,7 @@ metadata:
     io.service: db
   name: db
 spec:
+  type: ClusterIP
   ports:
     - name: dbport
       port: 3306

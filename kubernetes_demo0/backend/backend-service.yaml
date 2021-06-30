@@ -5,6 +5,7 @@ metadata:
     io.service: backend
   name: backend
 spec:
+  type: ClusterIP
   ports:
     - name: backendport
       port: 8080
