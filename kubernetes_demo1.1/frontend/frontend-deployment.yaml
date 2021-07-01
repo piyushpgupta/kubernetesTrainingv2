@@ -20,6 +20,5 @@ spec:
       containers:
         - image: piyushrgupta/frontend:v6.0
           name: frontend
-          serviceAccountName: default
           ports:
             - containerPort: 3000
